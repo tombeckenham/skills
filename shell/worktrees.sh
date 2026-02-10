@@ -80,10 +80,19 @@ ghwt() {
 
   echo "Worktree created at: $worktree_path"
 
-  # Copy .env.local if it exists
+  # Run setup from .cursor/worktrees.json if it exists, else copy .env.local and local.db
   local repo_root
   repo_root=$(git rev-parse --show-toplevel)
-  [[ -f "$repo_root/.env.local" ]] && cp "$repo_root/.env.local" "$worktree_path/.env.local"
+  if [[ -f "$repo_root/.cursor/worktrees.json" ]]; then
+    local cmd
+    while IFS= read -r cmd; do
+      cmd="${cmd//\$ROOT_WORKTREE_PATH/$repo_root}"
+      (cd "$worktree_path" && eval "$cmd")
+    done < <(jq -r '.setup-worktree[]?' "$repo_root/.cursor/worktrees.json")
+  else
+    [[ -f "$repo_root/.env.local" ]] && cp "$repo_root/.env.local" "$worktree_path/.env.local"
+    [[ -f "$repo_root/local.db" ]] && cp "$repo_root/local.db" "$worktree_path/local.db"
+  fi
 
   # Open Cursor and arrange Left & Right (Cursor left, Ghostty right)
   open -a "Cursor" "$worktree_path"
@@ -211,10 +220,19 @@ wt() {
     fi
     echo "Worktree created at: $worktree_path"
 
-    # Copy .env.local if it exists
+    # Run setup from .cursor/worktrees.json if it exists, else copy .env.local and local.db
     local repo_root
     repo_root=$(git rev-parse --show-toplevel)
-    [[ -f "$repo_root/.env.local" ]] && cp "$repo_root/.env.local" "$worktree_path/.env.local"
+    if [[ -f "$repo_root/.cursor/worktrees.json" ]]; then
+      local cmd
+      while IFS= read -r cmd; do
+        cmd="${cmd//\$ROOT_WORKTREE_PATH/$repo_root}"
+        (cd "$worktree_path" && eval "$cmd")
+      done < <(jq -r '.setup-worktree[]?' "$repo_root/.cursor/worktrees.json")
+    else
+      [[ -f "$repo_root/.env.local" ]] && cp "$repo_root/.env.local" "$worktree_path/.env.local"
+      [[ -f "$repo_root/local.db" ]] && cp "$repo_root/local.db" "$worktree_path/local.db"
+    fi
   fi
 
   # Open Cursor and arrange Left & Right (Cursor left, Ghostty right)
