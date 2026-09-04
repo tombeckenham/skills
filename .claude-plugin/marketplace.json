@@ -5,15 +5,15 @@
     "url": "https://github.com/tombeckenham"
   },
   "metadata": {
-    "description": "Personal Grok and Claude skills by Tom Beckenham.",
-    "version": "1.0.0"
+    "description": "Personal Grok and Claude skills: vspr, merge-and-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
+    "version": "1.1.0"
   },
   "plugins": [
     {
-      "name": "vspr",
-      "description": "Print the vscode.dev URL for a GitHub pull request. Never opens a browser.",
-      "source": "./plugins/vspr",
-      "version": "1.0.0",
+      "name": "tombeckenham-skills",
+      "description": "Personal Grok and Claude skills: vspr, merge-and-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
+      "source": "./",
+      "version": "1.1.0",
       "author": {
         "name": "Tom Beckenham",
         "url": "https://github.com/tombeckenham"
@@ -23,133 +23,10 @@
       "license": "MIT",
       "category": "development",
       "keywords": [
-        "vscode.dev",
-        "pull request",
+        "skills",
         "github",
-        "github.dev"
-      ],
-      "tags": [
-        "github",
-        "vscode"
-      ]
-    },
-    {
-      "name": "merge-and-exit",
-      "description": "Wait for the current branch's PR CI to go green, squash-merge it, then tear down the herdr worktree.",
-      "source": "./plugins/merge-and-exit",
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "repository": "https://github.com/tombeckenham/skills",
-      "license": "MIT",
-      "category": "development",
-      "keywords": [
-        "merge",
-        "herdr",
-        "worktree",
-        "ci"
-      ],
-      "tags": [
-        "github",
-        "herdr"
-      ]
-    },
-    {
-      "name": "triage-github",
-      "description": "Fan out subagents across open GitHub issues and PRs and produce a ranked triage report.",
-      "source": "./plugins/triage-github",
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "repository": "https://github.com/tombeckenham/skills",
-      "license": "MIT",
-      "category": "development",
-      "keywords": [
-        "github",
-        "triage",
-        "issues",
-        "pull requests"
-      ],
-      "tags": [
-        "github",
-        "triage"
-      ]
-    },
-    {
-      "name": "triage-github-global",
-      "description": "Fan out subagents across open GitHub issues, PRs, and discussions and produce a ranked triage report.",
-      "source": "./plugins/triage-github-global",
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "repository": "https://github.com/tombeckenham/skills",
-      "license": "MIT",
-      "category": "development",
-      "keywords": [
-        "github",
-        "triage",
-        "issues",
-        "pull requests",
-        "discussions"
-      ],
-      "tags": [
-        "github",
-        "triage"
-      ]
-    },
-    {
-      "name": "tanstack",
-      "description": "TanStack CLI reference for scaffolding, add-ons, and documentation lookup.",
-      "source": "./plugins/tanstack",
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "repository": "https://github.com/tombeckenham/skills",
-      "license": "MIT",
-      "category": "development",
-      "keywords": [
         "tanstack",
-        "tanstack start",
-        "tanstack router"
-      ],
-      "tags": [
-        "tanstack"
-      ]
-    },
-    {
-      "name": "copy-html-clipboard",
-      "description": "Copy HTML onto the macOS clipboard as public.html so it pastes with the destination's default font.",
-      "source": "./plugins/copy-html-clipboard",
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "repository": "https://github.com/tombeckenham/skills",
-      "license": "MIT",
-      "category": "productivity",
-      "keywords": [
-        "clipboard",
-        "html",
-        "gmail",
-        "macos"
-      ],
-      "tags": [
-        "clipboard",
-        "macos"
+        "herdr"
       ]
     }
   ]

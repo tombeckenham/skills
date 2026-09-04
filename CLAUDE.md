@@ -1,41 +1,34 @@
 # CLAUDE.md
 
-This repository is a Claude Code + Grok Build plugin marketplace. It is not an application.
+This repository is one plugin (`tombeckenham-skills`) that also publishes as a Claude Code + Grok Build marketplace. It is not an application.
 
 ## Layout
 
-- `.claude-plugin/marketplace.json` — Claude catalog (`name`: `tombeckenham-skills`)
-- `.grok-plugin/marketplace.json` — Grok catalog (same plugin list)
-- `.grok-plugin/plugin-index.json` — Grok browse metadata; regenerate when skills change
-- `plugins/<name>/skills/<name>/SKILL.md` — the skill Grok and Claude load
-- `plugins/<name>/plugin.json` and `plugins/<name>/.claude-plugin/plugin.json` — keep identical
+- `plugin.json` and `.claude-plugin/plugin.json` — keep identical. This is what `grok plugin install tombeckenham/skills` loads.
+- `.claude-plugin/marketplace.json` — Claude catalog (one plugin, source `./`)
+- `.grok-plugin/marketplace.json` — Grok catalog (same)
+- `.grok-plugin/plugin-index.json` — Grok browse metadata
+- `skills/<name>/SKILL.md` — skills Grok and Claude load
 
-## Adding a plugin
+## Adding a skill
 
-1. Create `plugins/<name>/skills/<name>/` with `SKILL.md` (and `scripts/` if the skill runs a helper).
-2. Add matching `plugin.json` files (see an existing plugin).
-3. Append the plugin to both marketplace files and to `plugin-index.json`.
+1. Create `skills/<name>/SKILL.md` (and `scripts/` if the skill runs a helper).
+2. Bump `version` in `plugin.json` and both marketplace entries.
+3. Update `.grok-plugin/plugin-index.json`.
 4. Validate:
 
 ```bash
 claude plugin validate .
-grok plugin validate plugins/<name>
+grok plugin validate .
 ```
 
-Bump `version` in `plugin.json` and both marketplace entries when the skill changes, or installed copies will not update.
+## Install
 
-## Writing skills
-
-Keep each fact in one place (the `SKILL.md`). Do not restate marketplace descriptions inside the skill body. Frontmatter `description` is the trigger; put "when to use" there, not as a later heading.
-
-## Install (for testers)
+```bash
+grok plugin install tombeckenham/skills --trust
+```
 
 ```
 /plugin marketplace add tombeckenham/skills
-/plugin install <plugin>@tombeckenham-skills
-```
-
-```bash
-grok plugin marketplace add tombeckenham/skills
-grok plugin install <plugin> --trust
+/plugin install tombeckenham-skills@tombeckenham-skills
 ```

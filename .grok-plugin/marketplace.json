@@ -1,158 +1,30 @@
 {
   "name": "tombeckenham-skills",
-  "description": "Personal Grok and Claude skills by Tom Beckenham.",
+  "description": "Personal Grok and Claude skills: vspr, merge-and-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
   "owner": {
     "name": "Tom Beckenham"
   },
   "plugins": [
     {
-      "name": "vspr",
-      "description": "Print the vscode.dev URL for a GitHub pull request. Never opens a browser.",
+      "name": "tombeckenham-skills",
+      "description": "Personal Grok and Claude skills: vspr, merge-and-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
       "category": "development",
       "source": {
         "type": "local",
-        "path": "./plugins/vspr"
+        "path": "./"
       },
       "homepage": "https://github.com/tombeckenham/skills",
       "keywords": [
-        "vscode.dev",
-        "pull request",
+        "skills",
         "github",
-        "github.dev"
-      ],
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "tags": [
-        "github",
-        "vscode"
-      ]
-    },
-    {
-      "name": "merge-and-exit",
-      "description": "Wait for the current branch's PR CI to go green, squash-merge it, then tear down the herdr worktree.",
-      "category": "development",
-      "source": {
-        "type": "local",
-        "path": "./plugins/merge-and-exit"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "keywords": [
-        "merge",
-        "herdr",
-        "worktree",
-        "ci"
-      ],
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "tags": [
-        "github",
-        "herdr"
-      ]
-    },
-    {
-      "name": "triage-github",
-      "description": "Fan out subagents across open GitHub issues and PRs and produce a ranked triage report.",
-      "category": "development",
-      "source": {
-        "type": "local",
-        "path": "./plugins/triage-github"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "keywords": [
-        "github",
-        "triage",
-        "issues",
-        "pull requests"
-      ],
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "tags": [
-        "github",
-        "triage"
-      ]
-    },
-    {
-      "name": "triage-github-global",
-      "description": "Fan out subagents across open GitHub issues, PRs, and discussions and produce a ranked triage report.",
-      "category": "development",
-      "source": {
-        "type": "local",
-        "path": "./plugins/triage-github-global"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "keywords": [
-        "github",
-        "triage",
-        "issues",
-        "pull requests",
-        "discussions"
-      ],
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "tags": [
-        "github",
-        "triage"
-      ]
-    },
-    {
-      "name": "tanstack",
-      "description": "TanStack CLI reference for scaffolding, add-ons, and documentation lookup.",
-      "category": "development",
-      "source": {
-        "type": "local",
-        "path": "./plugins/tanstack"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "keywords": [
         "tanstack",
-        "tanstack start",
-        "tanstack router"
+        "herdr"
       ],
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": {
         "name": "Tom Beckenham",
         "url": "https://github.com/tombeckenham"
-      },
-      "tags": [
-        "tanstack"
-      ]
-    },
-    {
-      "name": "copy-html-clipboard",
-      "description": "Copy HTML onto the macOS clipboard as public.html so it pastes with the destination's default font.",
-      "category": "productivity",
-      "source": {
-        "type": "local",
-        "path": "./plugins/copy-html-clipboard"
-      },
-      "homepage": "https://github.com/tombeckenham/skills",
-      "keywords": [
-        "clipboard",
-        "html",
-        "gmail",
-        "macos"
-      ],
-      "version": "1.0.0",
-      "author": {
-        "name": "Tom Beckenham",
-        "url": "https://github.com/tombeckenham"
-      },
-      "tags": [
-        "clipboard",
-        "macos"
-      ]
+      }
     }
   ]
 }
