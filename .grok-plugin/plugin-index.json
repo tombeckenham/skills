@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "plugins": {
+    "vspr": {
+      "version": "1.0.0",
+      "components": {
+        "skills": [
+          {
+            "name": "vspr",
+            "description": "Print the vscode.dev URL for a GitHub pull request. Do not open a browser. Use when the user runs /vspr, or asks for a vscode.dev PR link, \"vscode.dev URL for this PR\", \"open this PR in vscode.dev\" (return the URL only), or a github.dev/vscode.dev link to review a PR in the browser IDE."
+          }
+        ]
+      }
+    },
+    "merge-and-exit": {
+      "version": "1.0.0",
+      "components": {
+        "skills": [
+          {
+            "name": "merge-and-exit",
+            "description": "Wait for the current branch's PR CI to go green, merge it, remove this herdr worktree, and close the workspace (ends the session)."
+          }
+        ]
+      }
+    },
+    "triage-github": {
+      "version": "1.0.0",
+      "components": {
+        "skills": [
+          {
+            "name": "triage-github",
+            "description": "Triage all open GitHub issues and PRs in the current repository by fanning out up to 100 parallel subagents (one per item), then produce a single prioritized report ranking which PRs to review first and which issues to address first. Use when the user asks to \"triage open issues/PRs\", \"prioritize the backlog\", \"what should I review first\", \"what to address first\", \"sweep the repo\", or any request to bulk-evaluate open GitHub work and recommend an order."
+          }
+        ]
+      }
+    },
+    "triage-github-global": {
+      "version": "1.0.0",
+      "components": {
+        "skills": [
+          {
+            "name": "triage-github-global",
+            "description": "Triage all open GitHub issues, PRs, and discussions in the current repository by fanning out up to 100 parallel subagents (one per item), then produce a single prioritized report ranking which PRs to review first, which issues to address first, and which discussions need maintainer attention. Use when the user asks to \"triage open issues/PRs\", \"triage discussions\", \"prioritize the backlog\", \"what should I review first\", \"sweep the repo\", or any request to bulk-evaluate open GitHub work and recommend an order."
+          }
+        ]
+      }
+    },
+    "tanstack": {
+      "version": "1.0.0",
+      "components": {
+        "skills": [
+          {
+            "name": "tanstack",
+            "description": "TanStack CLI reference for scaffolding, add-ons, and documentation lookup. Use when working with TanStack Start/Router projects, adding integrations (auth, database, deployment), searching TanStack docs, or creating new TanStack applications. Replaces the removed TanStack MCP server."
+          }
+        ]
+      }
+    },
+    "copy-html-clipboard": {
+      "version": "1.0.0",
+      "components": {
+        "skills": [
+          {
+            "name": "copy-html-clipboard",
+            "description": "Copy HTML content to the macOS clipboard as raw text/html so it pastes into Gmail, Google Docs, Notion, etc. using the destination's default font (no embedded fonts/styles like textutil/RTF would inject). Strips em-dashes automatically so output doesn't read as AI-written. Use whenever the user wants formatted text (bullet lists, links, bold, headings) to land in an email or rich-text editor with the destination's native styling. Triggers include \"copy this list/HTML to clipboard for Gmail\", \"paste into email with default font\", \"make this a clickable bullet list I can paste into an email\"."
+          }
+        ]
+      }
+    }
+  }
+}
