@@ -2,12 +2,24 @@
   "version": 1,
   "plugins": {
     "tombeckenham-skills": {
-      "version": "1.1.0",
+      "version": "1.2.0",
       "components": {
         "skills": [
           {
+            "name": "approve-exit",
+            "description": "Approve the current branch's PR with a comment, approve its pending workflow runs, enable auto-merge, then remove this herdr worktree and close the workspace (ends the session)."
+          },
+          {
+            "name": "clean-exit",
+            "description": "Remove this herdr worktree and close the workspace without merging (ends the session)."
+          },
+          {
             "name": "copy-html-clipboard",
             "description": "Copy HTML content to the macOS clipboard as raw text/html so it pastes into Gmail, Google Docs, Notion, etc. using the destination's default font (no embedded fonts/styles like textutil/RTF would inject). Strips em-dashes automatically so output doesn't read as AI-written. Use whenever the user wants formatted text (bullet lists, links, bold, headings) to land in an email or rich-text editor with the destination's native styling. Triggers include \"copy this list/HTML to clipboard for Gmail\", \"paste into email with default font\", \"make this a clickable bullet list I can paste into an email\"."
+          },
+          {
+            "name": "fail-exit",
+            "description": "Post review feedback asking for changes on the current branch's PR as a plain comment review (never \"Request changes\", which blocks other maintainers from approving), then remove this herdr worktree and close the workspace (ends the session)."
           },
           {
             "name": "merge-and-exit",

@@ -30,6 +30,9 @@ grok plugin install tombeckenham-skills --trust
 | --- | --- |
 | `/vspr` | Print a `vscode.dev` URL for a GitHub PR. Does not open a browser. |
 | `/merge-and-exit` | Squash-merge the current PR after CI is green, then remove the herdr worktree. |
+| `/clean-exit` | Remove the herdr worktree and close the workspace without merging. |
+| `/approve-exit` | Approve the PR with a comment, approve pending workflow runs, enable auto-merge, then remove the herdr worktree. |
+| `/fail-exit` | Post change-request feedback as a comment review (not "Request changes"), then remove the herdr worktree. |
 | `/triage-github` | Rank open issues and PRs with parallel subagents. |
 | `/triage-github-global` | Same, plus GitHub discussions. |
 | `/tanstack` | TanStack CLI reference (scaffold, add-ons, docs lookup). |

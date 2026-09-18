@@ -1,13 +1,13 @@
 {
   "name": "tombeckenham-skills",
-  "description": "Personal Grok and Claude skills: vspr, merge-and-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
+  "description": "Personal Grok and Claude skills: vspr, merge-and-exit, approve-exit, fail-exit, clean-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
   "owner": {
     "name": "Tom Beckenham"
   },
   "plugins": [
     {
       "name": "tombeckenham-skills",
-      "description": "Personal Grok and Claude skills: vspr, merge-and-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
+      "description": "Personal Grok and Claude skills: vspr, merge-and-exit, approve-exit, fail-exit, clean-exit, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
       "category": "development",
       "source": {
         "type": "local",
@@ -20,7 +20,7 @@
         "tanstack",
         "herdr"
       ],
-      "version": "1.1.0",
+      "version": "1.2.0",
       "author": {
         "name": "Tom Beckenham",
         "url": "https://github.com/tombeckenham"
