@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "tombeckenham-skills": {
-      "version": "1.2.0",
+      "version": "1.3.0",
       "components": {
         "skills": [
           {
@@ -24,6 +24,10 @@
           {
             "name": "merge-and-exit",
             "description": "Wait for the current branch's PR CI to go green, merge it, remove this herdr worktree, and close the workspace (ends the session)."
+          },
+          {
+            "name": "pr-summarise",
+            "description": "Summarise a GitHub pull request as a single decision table so the maintainer can action it: what it solves, whether that matters, added complexity, fallbacks that should be errors, public type/API changes, users helped and hurt, AG-UI and other standards compliance, and an Approve / Fix / Reject verdict. Use when the user runs /pr-summarise, or asks to \"summarise this PR\", \"should I merge this PR\", \"what does PR N do\", or wants a quick verdict on a PR."
           },
           {
             "name": "tanstack",
