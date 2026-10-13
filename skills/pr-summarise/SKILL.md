@@ -42,12 +42,13 @@ Every answer is backed by the diff. Cite `file:line` in the Evidence column wher
 - **Users positively affected**: an estimate with its basis, e.g. "Most: every user of `chat()` with streaming" or "Few: only custom adapter authors (1 reporter, 3 thumbs up)". Use Few / Some / Most / All and an approximate figure when the evidence supports one. Don't invent precision.
 - **Users negatively affected**: same scale. Count anyone hit by a breaking change, a changed default, a performance cost, or a new required step. "None" is a valid answer.
 - **Standards compliance**: does it change behaviour covered by [AG-UI](https://docs.ag-ui.com) (event types, event ordering, message and tool-call shapes) or any other standard or spec the repo follows (check README, CLAUDE.md, docs for claims such as OpenAPI, JSON Schema, MCP, OpenTelemetry, semver, WCAG)? Answer Improves / Neutral / Breaks, naming the standard and the rule. If the repo follows no relevant standard, say "N/A".
+- **Better / proper fix**: is this the right fix, or is there a better one? Check whether it patches a symptom while the root cause sits elsewhere (grep the other callers of what it touches: are they still broken?), whether it duplicates something the codebase or a dependency already provides, and whether a smaller or more general change would do the same job. Answer "No, this is the proper fix" or describe the better fix in one or two sentences with where it would go.
 - **Verdict**: exactly one of
   - **Approve**: correct, worth having, mergeable as is.
   - **Fix**: worth having but needs specific changes first. List them.
   - **Reject**: not worth solving, wrong approach, or costs outweigh the benefit. Say which.
 
-A fallback that should be an error, an unintended breaking change, or a compliance break means the verdict is Fix at best.
+A fallback that should be an error, an unintended breaking change, or a compliance break means the verdict is Fix at best. If a better fix exists, the verdict is Fix (rework it that way) or Reject (the better fix replaces this PR).
 
 ## Output
 
@@ -66,6 +67,7 @@ Print the PR title as a link, then exactly this table, then stop.
 | Users positively affected | | |
 | Users negatively affected | | |
 | AG-UI / standards compliance | | |
+| Better / proper fix | | |
 | **Verdict** | **Approve / Fix / Reject** | one-line reason |
 ```
 

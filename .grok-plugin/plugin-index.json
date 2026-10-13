@@ -2,12 +2,16 @@
   "version": 1,
   "plugins": {
     "tombeckenham-skills": {
-      "version": "1.3.0",
+      "version": "1.4.0",
       "components": {
         "skills": [
           {
             "name": "approve-exit",
             "description": "Approve the current branch's PR with a comment, approve its pending workflow runs, enable auto-merge, then remove this herdr worktree and close the workspace (ends the session)."
+          },
+          {
+            "name": "approve-merge-exit",
+            "description": "Approve the current branch's PR with a comment, approve its pending workflow runs, wait for CI to go green, merge it, then remove this herdr worktree and close the workspace (ends the session)."
           },
           {
             "name": "clean-exit",
