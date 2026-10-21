@@ -5,13 +5,14 @@ description: >-
   can action it: what it solves, whether that matters, added complexity,
   fallbacks that should be errors, public type/API changes, users helped and
   hurt, AG-UI and other standards compliance, and an Approve / Fix / Reject
-  verdict. Use when the user runs /pr-summarise, or asks to "summarise this PR",
+  verdict, plus key files to review by hand, manual test steps, and an interactive HTML
+  explainer (before/after, what's to love, what's bad). Use when the user runs /pr-summarise, or asks to "summarise this PR",
   "should I merge this PR", "what does PR N do", or wants a quick verdict on a PR.
 ---
 
 # pr-summarise
 
-Read one PR and print one table that lets the maintainer decide what to do with it. Read-only: never comment, approve, or push.
+Read one PR, print one table that lets the maintainer decide what to do with it, list the files worth reviewing by hand and how to test it manually, and open an interactive HTML explainer. Read-only on GitHub: never comment, approve, or push. The only thing written is the local HTML file.
 
 ## Resolve the PR
 
@@ -71,4 +72,39 @@ Print the PR title as a link, then exactly this table, then stop.
 | **Verdict** | **Approve / Fix / Reject** | one-line reason |
 ```
 
-If the verdict is Fix, follow the table with a numbered list of the required changes, each with `file:line`. Nothing else: no preamble, no walkthrough of the diff.
+If the verdict is Fix, follow the table with a numbered list of the required changes, each with `file:line`.
+
+Then print **Review manually**: the 3 to 7 files where a human's eyes add the most, ranked, each with `path:line-range` and one line on what to check there. Prefer files holding core logic, public API or type changes, fallbacks flagged above, concurrency or security paths, and anything the tests don't cover. Skip lockfiles, generated code, snapshots, and pure renames. If the PR touches fewer files than that, list only the ones that matter.
+
+```markdown
+**Review manually**
+1. `src/stream.ts:40-88` — new retry loop; check it can't swallow an abort.
+2. ...
+```
+
+Then print **Test manually**: numbered steps a human can run to see the change work (and see the old bug, if it fixes one). Name the exact commands, inputs, or UI path, and the expected result after the PR versus before it. Include one edge case aimed at the riskiest part found above. Get the setup from the repo (README, `package.json` scripts, examples, tests the PR adds); don't invent commands. If the change can't be exercised by hand (types-only, internal refactor), say so and name the test that covers it.
+
+```markdown
+**Test manually**
+1. `pnpm --filter example-chat dev`, open http://localhost:3000.
+2. Send a message, then hit Stop mid-stream. Expect: stream ends, no error toast (before: "AbortError" toast).
+3. Edge case: ...
+```
+
+Finish with the path of the HTML explainer. Nothing else: no preamble, no walkthrough of the diff.
+
+## HTML explainer
+
+Write one self-contained file to `${TMPDIR:-/tmp}/pr-<N>-explainer.html` (inline CSS and JS, no external requests), then open it (`open` on macOS, `xdg-open` on Linux). It explains the PR to someone who hasn't read it, in under two minutes. Keep every section short: sentences, not paragraphs.
+
+Sections, in order:
+
+1. **Header**: PR title, link, author, +A/-D, and the verdict as a coloured badge (Approve green, Fix amber, Reject red).
+2. **In one breath**: two or three sentences on what changes and why.
+3. **Before / After**: a toggle (or tabs) that swaps between the behaviour before and after the PR. For each, a short description plus the most telling code snippet or a small diagram (inline SVG or CSS boxes) of the flow. Pick the one or two changes that best show the difference, not every hunk.
+4. **What's to love**: bullet list of the genuine strengths of the design, each tied to a file.
+5. **What's bad**: bullet list of design problems, risks, fallbacks that should be errors, and the better fix if there is one, each tied to `file:line`. If there's nothing bad, say so in one line; don't invent problems.
+6. **Review manually**: the same file list as the terminal output, each item expandable (`<details>`) to show the relevant diff excerpt.
+7. **Test manually**: the same steps as the terminal output, as a checklist (`<input type="checkbox">`) with each command in a code block.
+
+Interactivity stays native: `<details>`, a radio-button or button toggle for before/after, nothing heavier. Follow the system light/dark theme with `prefers-color-scheme`. Escape any code you embed (`<`, `>`, `&`).

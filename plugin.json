@@ -1,6 +1,6 @@
 {
   "name": "tombeckenham-skills",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Personal Grok and Claude skills: vspr, merge-and-exit, approve-exit, approve-merge-exit, fail-exit, clean-exit, pr-summarise, triage-github, triage-github-global, tanstack, copy-html-clipboard.",
   "author": {
     "name": "Tom Beckenham",
