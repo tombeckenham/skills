@@ -2,7 +2,7 @@
   "version": 1,
   "plugins": {
     "tombeckenham-skills": {
-      "version": "1.5.0",
+      "version": "1.6.0",
       "components": {
         "skills": [
           {
@@ -28,6 +28,10 @@
           {
             "name": "merge-and-exit",
             "description": "Wait for the current branch's PR CI to go green, merge it, remove this herdr worktree, and close the workspace (ends the session)."
+          },
+          {
+            "name": "pr-fix",
+            "description": "Make the fixes a PR needs (from this session's pr-summarise Fix list, or what the user asks for), commit and push them to the PR author's branch, approve the PR's pending workflow runs, then run pr-summarise again for a fresh verdict."
           },
           {
             "name": "pr-summarise",
