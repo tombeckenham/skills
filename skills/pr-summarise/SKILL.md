@@ -14,6 +14,8 @@ description: >-
 
 Read one PR, print one table that lets the maintainer decide what to do with it, list the files worth reviewing by hand and how to test it manually, and open an interactive HTML explainer. Read-only on GitHub: never comment, approve, or push. The only thing written is the local HTML file.
 
+**Forge.** First run `src repo view --json nameWithOwner`. If it prints the repo, the repo is on TanStack Source: run each `gh` command below as `src` with the same flags, except where noted. If it fails, use `gh` as written.
+
 ## Resolve the PR
 
 1. If the user passed a number, `#N`, or a PR URL, use that.
@@ -25,6 +27,8 @@ Read one PR, print one table that lets the maintainer decide what to do with it,
 gh pr view <PR> --json number,title,body,author,url,additions,deletions,changedFiles,files,labels,closingIssuesReferences,reviewDecision,statusCheckRollup
 gh pr diff <PR>
 ```
+
+On Source, `src pr view` has no `reviewDecision` or `statusCheckRollup`: leave them out and run `src pr checks <PR>` for CI status. `src pr impact <PR>` lists the public API changes the forge detected; use it as a lead for the Public type / API row and confirm each one in the diff.
 
 Read the whole diff, not just the description. Descriptions are claims; the diff is the evidence. Also read:
 

@@ -1,7 +1,7 @@
 ---
 name: vspr
 description: >-
-  Print the vscode.dev URL for a GitHub pull request. Do not open a browser.
+  Print the vscode.dev URL for a GitHub pull request (on TanStack Source, the PR URL). Do not open a browser.
   Use when the user runs /vspr, or asks for a vscode.dev PR link, "vscode.dev URL
   for this PR", "open this PR in vscode.dev" (return the URL only), or a
   github.dev/vscode.dev link to review a PR in the browser IDE.
@@ -23,6 +23,10 @@ gh pr view --json url,number,headRepositoryOwner,headRepository
 If that fails, stop: no PR on this branch. Tell the user to pass a number or open one.
 
 Owner/repo come from the GitHub URL (`github.com/OWNER/REPO/pull/N`), not from a fork's head repo.
+
+## TanStack Source
+
+If `src repo view --json nameWithOwner` prints the repo, it's on TanStack Source, which vscode.dev can't open. Print the PR's Source URL instead (`src pr view [N] --json url`) and say in one line that vscode.dev only supports GitHub.
 
 ## URL
 

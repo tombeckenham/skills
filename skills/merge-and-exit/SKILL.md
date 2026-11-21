@@ -2,14 +2,16 @@
 name: merge-and-exit
 description: Wait for the current branch's PR CI to go green, merge it, remove this herdr worktree, and close the workspace (ends the session).
 disable-model-invocation: true
-allowed-tools: Bash(gh pr checks *) Bash(gh run view *) Bash(gh pr merge *) Bash(git push origin --delete *) Bash(herdr worktree remove *)
+allowed-tools: Bash(gh pr checks *) Bash(gh run view *) Bash(gh pr merge *) Bash(git push origin --delete *) Bash(herdr worktree remove *) Bash(src repo view *) Bash(src pr view *) Bash(src pr checks *) Bash(src run view *) Bash(src pr merge *)
 ---
 
 Finish the current branch: merge its PR once CI is green, then tear down this herdr worktree and workspace. The workspace close ends this session, so do all reporting BEFORE the final step.
 
+**Forge.** First run `src repo view --json nameWithOwner`. If it prints the repo, the repo is on TanStack Source: run each `gh` command below as `src` with the same flags, except where a step says otherwise. If it fails, use `gh` as written.
+
 Steps, in order — stop and report at the first failure:
 
-1. Preconditions. `git status --porcelain` must be empty and the branch must be pushed (`git status -sb` shows no "ahead"). Commit/push first if not. Find the PR: `gh pr view --json number,url,state,mergeStateStatus`. If there is no open PR, stop.
+1. Preconditions. `git status --porcelain` must be empty and the branch must be pushed (`git status -sb` shows no "ahead"). Commit/push first if not. Find the PR: `gh pr view --json number,url,state,mergeStateStatus` (on Source, `mergeable` in place of `mergeStateStatus`). If there is no open PR, stop.
 2. Wait for CI: `gh pr checks --watch --fail-fast`. If any check fails, stop and report the failing check (`gh run view --log-failed` for the run) — do not merge, do not remove the worktree.
 3. Merge: `gh pr merge --squash` (no `--delete-branch`: in a worktree gh then tries to check out the base branch, which fails when it is checked out elsewhere). If the merge is refused (review required, conflicts, `mergeStateStatus` BLOCKED), stop and report why. Then delete the remote branch: `git push origin --delete "$(git branch --show-current)"`; if that fails (e.g. the repo auto-deletes head branches), note it and continue.
 4. Report: one line with the PR URL and the merge commit. This is the last thing the user will see from this session.

@@ -13,9 +13,10 @@ Do **not** invoke for single-item review (just look at it directly) or when the 
 
 ## Prerequisites
 
+- **Forge**: run `src repo view --json nameWithOwner`. If it prints the repo, the repo is on TanStack Source: use `src` (check `src auth status`) and the Source commands noted below. If it fails, use `gh` as written.
 - `gh` CLI is authenticated (`gh auth status`). If not, stop and ask the user to authenticate — do not attempt to fix auth automatically.
 - Run from inside a git repo whose `origin` points at the GitHub repo to triage. Confirm with `gh repo view --json nameWithOwner,hasDiscussionsEnabled`.
-- If `hasDiscussionsEnabled` is `false`, skip the discussions section entirely (don't fetch, don't include in budget, note in report that discussions are disabled).
+- If `hasDiscussionsEnabled` is `false` (GitHub only; Source has no such field, see below), skip the discussions section entirely (don't fetch, don't include in budget, note in report that discussions are disabled).
 
 ## Procedure
 
@@ -55,6 +56,22 @@ query($owner: String!, $name: String!) {
 
 Substitute `<OWNER>` and `<REPO>` from `gh repo view --json nameWithOwner`.
 
+On TanStack Source (see Prerequisites), the list commands return fewer fields, so fetch these and let each subagent read the rest:
+
+```bash
+src pr list --state open --limit 200 --json number,title,url,author,assignees,createdAt,isDraft,labels
+src issue list --state open --limit 200 --json number,title,url,author,assignees,createdAt,labels
+```
+
+On TanStack Source, discussions are feature requests and questions, with no GraphQL. Use these in place of the `gh api graphql` call (treat requests as Ideas and questions as Q&A in the rubric):
+
+```bash
+src discussion list --category request --state open --limit 100 --json number,title,url,author,category,createdAt,updatedAt,votes,replies,answered,locked
+src discussion list --category question --limit 100 --json number,title,url,author,category,createdAt,updatedAt,votes,replies,answered,locked
+```
+
+If both come back empty, treat discussions as disabled.
+
 If the combined total exceeds 100 items, tell the user the counts (PRs / issues / discussions) and ask whether to cap at 100 most-recently-updated or split into batches. The agent cap is 100 total across all three categories.
 
 ### 2. Decide the parallel split
@@ -76,6 +93,8 @@ Gather:
 - `gh pr view [NUMBER] --json title,body,author,assignees,createdAt,updatedAt,isDraft,mergeable,mergeStateStatus,reviewDecision,labels,additions,deletions,changedFiles,statusCheckRollup,comments,closingIssuesReferences`
 - `gh pr diff [NUMBER]` (skim — don't dump it)
 - Recent review comments if any
+
+On TanStack Source, use `src` in place of `gh`: `src pr view [NUMBER] --json title,body,author,createdAt,isDraft,mergeable,labels,assignees,additions,deletions,changedFiles,closingIssuesReferences`, `src pr view [NUMBER] --comments`, `src pr checks [NUMBER]` for ciStatus, and `src pr diff [NUMBER]`. There is no review decision field: set reviewState from the comments, or "none".
 
 `closingIssuesReferences` is GitHub's authoritative "this PR closes #X" linkage (populated by closing keywords like `Closes #123`). Put those issue numbers in `closesIssues`. Also scan the PR body/title for issue references that use closing keywords but weren't auto-linked (cross-repo, typos) and include those too. `assignees` is the array of assigned logins (may be empty).
 
@@ -101,6 +120,8 @@ Gather:
 - Cross-referenced/linked PRs from the timeline: `gh api "repos/<OWNER>/<REPO>/issues/[NUMBER]/timeline" --jq '[.[] | select(.event=="cross-referenced" and .source.issue.pull_request != null) | .source.issue.html_url] | unique'` (substitute `<OWNER>`/`<REPO>`). Any URL returned is a PR that references this issue — capture it in `linkedPR`.
 - Skim comments for repro steps, workarounds, and any "fixed by #NNN" / PR links
 
+On TanStack Source, use `src issue view [NUMBER] --json title,body,author,createdAt,labels,comments,assignees,closedByPullRequestsReferences` in place of `gh issue view` and the timeline call (the PRs that fix it go in linkedPR) and `src issue react [NUMBER] --json content,count` for reactions.
+
 Set `linkedPR` to the URL of an open PR that addresses this issue if one exists (from the timeline query or comments), else empty. This is used to dedup: issues with a linked PR are folded under that PR in the report. `assignees` is the array of assigned logins (may be empty).
 
 Return ONLY a JSON object on one line:
@@ -122,6 +143,7 @@ Triage GitHub discussion [URL]. Read-only access via `gh api graphql`.
 
 Gather:
 - `gh api graphql -f query='{ repository(owner:"<OWNER>", name:"<REPO>") { discussion(number: [NUMBER]) { title body url createdAt updatedAt upvoteCount isAnswered locked category { name } author { login } labels(first: 10) { nodes { name } } comments(first: 30) { totalCount nodes { author { login } body createdAt isAnswer upvoteCount } } reactions { totalCount } } } }'`
+- On TanStack Source: `src discussion view [NUMBER] --json title,body,url,author,category,createdAt,updatedAt,votes,replies,answered,locked,state` in place of the GraphQL call.
 - Skim body + comments for: maintainer engagement, repro steps that suggest a real bug, and any links to issues/PRs (`#NNN` or full github.com/.../issues|pull/NNN URLs)
 
 If the discussion body or comments reference an existing issue or PR that tracks it (or it was converted to an issue), capture that URL in `linkedIssueOrPR`, else empty. This is used to dedup: discussions already tracked by an issue or PR are folded away and only surface if unlinked.

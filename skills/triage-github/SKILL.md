@@ -13,6 +13,7 @@ Do **not** invoke for single-item review (just look at it directly) or when the 
 
 ## Prerequisites
 
+- **Forge**: run `src repo view --json nameWithOwner`. If it prints the repo, the repo is on TanStack Source: use `src` (check `src auth status`) and the Source commands noted below. If it fails, use `gh` as written.
 - `gh` CLI is authenticated (`gh auth status`). If not, stop and ask the user to authenticate — do not attempt to fix auth automatically.
 - Run from inside a git repo whose `origin` points at the GitHub repo to triage. Confirm with `gh repo view --json nameWithOwner`.
 
@@ -25,6 +26,13 @@ Run these two `gh` calls in parallel. Use JSON so the downstream agent prompts a
 ```bash
 gh pr list --state open --limit 200 --json number,title,url,author,createdAt,updatedAt,isDraft,mergeable,reviewDecision,labels,additions,deletions,changedFiles,statusCheckRollup
 gh issue list --state open --limit 200 --json number,title,url,author,createdAt,updatedAt,labels,comments,reactionGroups
+```
+
+On TanStack Source (see Prerequisites), the list commands return fewer fields, so fetch these and let each subagent read the rest:
+
+```bash
+src pr list --state open --limit 200 --json number,title,url,author,assignees,createdAt,isDraft,labels
+src issue list --state open --limit 200 --json number,title,url,author,assignees,createdAt,labels
 ```
 
 If either list returns more than 100 items, tell the user the count and ask whether to cap at 100 most-recently-updated or split into batches. The agent cap is 100 total across PRs+issues.
@@ -49,6 +57,8 @@ Gather:
 - `gh pr diff [NUMBER]` (skim — don't dump it)
 - Recent review comments if any
 
+On TanStack Source, use `src` in place of `gh`: `src pr view [NUMBER] --json title,body,author,createdAt,isDraft,mergeable,labels,additions,deletions,changedFiles,closingIssuesReferences`, `src pr view [NUMBER] --comments`, `src pr checks [NUMBER]` for ciStatus, and `src pr diff [NUMBER]`. There is no review decision field: set reviewState from the comments, or "none".
+
 Return ONLY a JSON object on a single line (no prose, no fences), matching:
 {"kind":"pr","number":N,"title":"...","url":"...","author":"...","ageDays":N,"sizeLOC":N,"ciStatus":"passing|failing|pending|none","mergeable":true|false,"reviewState":"approved|changes_requested|review_required|none","draft":true|false,"priority":"P0|P1|P2|P3","reason":"<=140 chars","blockedBy":"<=80 chars or empty","recommendedAction":"merge|review|request-changes|close|wait"}
 
@@ -69,6 +79,8 @@ Triage GitHub issue [URL]. Read-only access via `gh`.
 Gather:
 - `gh issue view [NUMBER] --json title,body,author,createdAt,updatedAt,labels,comments,reactionGroups,assignees`
 - Skim comments for repro steps, workarounds, related PRs
+
+On TanStack Source, use `src issue view [NUMBER] --json title,body,author,createdAt,labels,comments,assignees,closedByPullRequestsReferences` (the PRs that fix it go in linkedPR) and `src issue react [NUMBER] --json content,count` for reactions.
 
 Return ONLY a JSON object on one line:
 {"kind":"issue","number":N,"title":"...","url":"...","author":"...","ageDays":N,"reactions":N,"comments":N,"hasRepro":true|false,"linkedPR":"<url or empty>","category":"bug|feature|docs|question|chore","priority":"P0|P1|P2|P3","reason":"<=140 chars","recommendedAction":"fix|investigate|answer|close|wait-for-info"}
